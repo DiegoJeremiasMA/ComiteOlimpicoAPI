@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "nombreCompleto": "Diego Monroy Agustin",
+    "edad": 21,
+    "departamento": "Guatemala",
+    "nacionalidad": "Guatemalteco",
+    "fechaIngreso": "2025-09-18",
+    "disciplinaId": 1,
+    "sesiones": [
+      {
+        "id": 1,
+        "fecha": "2025-09-18",
+        "tipo": "resistencia",
+        "marca": 100.0,
+        "ubicacion": "Nacional",
+        "atletaId": 1
+      },
+      {
+        "id": 2,
+        "fecha": "2025-09-19",
+        "tipo": "resistencia",
+        "marca": 150.0,
+        "ubicacion": "Nacional",
+        "atletaId": 1
+      },
+      {
+        "id": 3,
+        "fecha": "2025-09-20",
+        "tipo": "resistencia",
+        "marca": 250.0,
+        "ubicacion": "Internacional",
+        "pais": "El Salvador",
+        "atletaId": 1
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nombreCompleto": "Josue",
+    "edad": 18,
+    "departamento": "",
+    "nacionalidad": "Mexicano",
+    "fechaIngreso": "2025-09-27",
+    "disciplinaId": 3,
+    "sesiones": [
+      {
+        "id": 4,
+        "fecha": "2025-09-27",
+        "tipo": "resistencia",
+        "marca": 50.0,
+        "ubicacion": "internacional",
+        "pais": "Mexico",
+        "atletaId": 2
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nombreCompleto": "Matias",
+    "edad": 18,
+    "departamento": "Guatemala",
+    "nacionalidad": "Guatemalteco",
+    "fechaIngreso": "2025-11-01",
+    "disciplinaId": 2,
+    "sesiones": []
+  }
+]

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Atletas</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1>Atletas del Comité Olímpico</h1>
+<a href="/api/atletas/nuevo">Registrar Nuevo Atleta</a>
+<a href="/api/servicios/reportes/csv" style="font-weight: bold;">Descargar Reporte Completo (CSV)</a>
+<a href="/api/servicios/admin" style="color: red; font-weight: bold;">
+    Administración de Respaldos
+</a>
+<br/><br/>
+<br/><br/>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>Departamento</th>
+        <th>Acciones</th> </tr>
+    </thead>
+    <tbody>
+    <tr th:each="atleta : ${atletas}">
+        <td th:text="${atleta.id}">1</td>
+        <td>
+            <a th:href="@{/api/atletas/historial/{id}(id=${atleta.id})}"
+               th:text="${atleta.nombreCompleto}">
+                Nombre de Prueba
+            </a>
+        </td>
+        <td th:text="${atleta.edad}">99</td>
+        <td th:text="${atleta.departamento}">Depto Prueba</td>
+        <td>
+            <a th:href="@{/api/atletas/editar/{id}(id=${atleta.id})}">Editar</a>
+            &nbsp;|&nbsp; <a th:href="@{/api/atletas/eliminar/{id}(id=${atleta.id})}">Eliminar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

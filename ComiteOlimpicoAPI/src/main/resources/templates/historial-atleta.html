@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Historial del Atleta</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div th:object="${atleta}">
+  <h1 th:text="|Historial de: *{nombreCompleto}|">Historial del Atleta</h1>
+  <p>
+    <strong>ID:</strong> <span th:text="*{id}"></span><br/>
+    <strong>Edad:</strong> <span th:text="*{edad}"></span><br/>
+    <strong>Departamento:</strong> <span th:text="*{departamento}"></span><br/>
+    <strong>Disciplina:</strong> <span th:text="${disciplina.nombreMostrado}"></span>
+  </p>
+</div>
+<div th:if="${promedio}">
+  <hr/>
+  <h2>Resumen de Estadísticas</h2>
+  <div style="width: 600px; margin-bottom: 20px;">
+    <canvas id="statsChart"></canvas>
+  </div>
+  <p>
+    <strong>Promedio de Rendimiento:</strong>
+    <span th:text="${#numbers.formatDecimal(promedio, 1, 2)}">0.0</span>
+    <span th:text="${disciplina.unidad}"></span>
+  </p>
+  <p>
+    <strong>Mejor Marca:</strong>
+    <span th:text="${mejorMarca}">0.0</span>
+    <span th:text="${disciplina.unidad}"></span>
+  </p>
+  <p>
+    <strong>Promedio Nacional:</strong>
+    <span th:text="${#numbers.formatDecimal(promNacional, 1, 2)}">0.0</span>
+  </p>
+  <p>
+    <strong>Promedio Internacional:</strong>
+    <span th:text="${#numbers.formatDecimal(promInternacional, 1, 2)}">0.0</span>
+  </p>
+</div>
+<a th:href="@{/api/atletas/planilla/{id}(id=${atleta.id})}" style="font-weight: bold; font-size: 1.1em;">
+  Procesar Planilla de Pago
+</a>
+<hr/>
+
+<h2>Sesiones de Entrenamiento</h2>
+
+<a th:href="@{/api/atletas/historial/{id}/nuevo-entrenamiento(id=${atleta.id})}">
+  Registrar Nuevo Entrenamiento
+</a>
+<br/><br/>
+
+<table border="1">
+  <thead>
+  <tr>
+    <th>Fecha</th>
+    <th>Tipo</th>
+    <th>Marca</th>
+    <th>Unidad</th>
+    <th>Ubicación</th>
+    <th>País</th>
+    <th>Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="sesion : ${sesiones}">
+    <td th:text="${sesion.fecha}">2025-01-01</td>
+    <td th:text="${sesion.tipo}">Resistencia</td>
+    <td th:text="${sesion.marca}">100.0</td>
+    <td th:text="${disciplina.unidad}">metros</td>
+    <td th:text="${sesion.ubicacion}">Nacional</td>
+    <td th:text="${sesion.pais}"></td>
+    <td>
+      <a th:href="@{/api/atletas/historial/editar-entrenamiento/{id}(id=${sesion.id})}">Editar</a>
+      &nbsp;|&nbsp; <a th:href="@{/api/atletas/historial/eliminar-entrenamiento/{id}(id=${sesion.id})}">Eliminar</a>
+    </td>
+  </tr>
+  </tbody>
+</table> <br/>
+<a href="/api/atletas/lista">Volver a la lista principal</a>
+<script th:inline="javascript">
+
+  if ( false) {
+
+    var promTotal = 0;
+    var mejorMarca =  0;
+    var promNacional =  0;
+    var promInter =  0;
+    var unidad =  'puntos';
+
+    var labels = ["Promedio General", "Mejor Marca", "Prom. Nacional", "Prom. Internacional"];
+    var data = [promTotal, mejorMarca, promNacional, promInter];
+
+    var ctx = document.getElementById('statsChart').getContext('2d');
+
+    // 5. ¡Creamos el gráfico!
+    new Chart(ctx, {
+      type: 'bar', // Tipo de gráfico: de barras
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Rendimiento en ' + unidad,
+          data: data,
+          backgroundColor: [
+            'rgba(54, 162, 235, 0.6)',  // Azul
+            'rgba(75, 192, 192, 0.6)',  // Verde
+            'rgba(255, 206, 86, 0.6)', // Amarillo
+            'rgba(255, 99, 132, 0.6)'  // Rojo
+          ]
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true // Empezar el eje Y en 0
+          }
+        }
+      }
+    });
+  }
+
+  /*]]>*/
+</script>
+
+</body>
+</html>
+</body>
+</html>

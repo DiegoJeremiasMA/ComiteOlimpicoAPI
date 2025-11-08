@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrar Entrenamiento</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1 th:text="|Registrar Entrenamiento para: ${atletaNombre}|">Registrar Entrenamiento</h1>
+
+<form action="#" th:action="@{/api/atletas/historial/guardar-entrenamiento}"
+      th:object="${sesion}" method="POST">
+
+  <input type="hidden" th:field="*{atletaId}" />
+  <input type="hidden" th:field="*{id}" />
+
+  <div>
+    <label>Fecha (YYYY-MM-DD):</label>
+    <input type="text" th:field="*{fecha}" />
+  </div>
+  <div>
+    <label>Tipo (Resistencia, Técnica, etc.):</label>
+    <input type="text" th:field="*{tipo}" />
+  </div>
+  <div>
+    <label>Marca:</label>
+    <input type="number" step="0.01" th:field="*{marca}" />
+  </div>
+  <div>
+    <label>Ubicación (Nacional/Internacional):</label>
+    <input type="text" th:field="*{ubicacion}" />
+  </div>
+  <div>
+    <label>País (si es Internacional):</label>
+    <input type="text" th:field="*{pais}" />
+  </div>
+
+  <button type="submit">Guardar Entrenamiento</button>
+</form>
+
+<br/>
+<a th:href="@{/api/atletas/historial/{id}(id=${sesion.atletaId})}">Volver al historial</a>
+
+</body>
+</html>

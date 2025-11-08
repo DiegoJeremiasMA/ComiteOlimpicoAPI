@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Planilla del Atleta</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1 th:text="|Reporte de Planilla para: ${resultado.atletaNombre}|">Reporte de Planilla</h1>
+
+<div th:if="${resultado.mensaje}">
+  <p th:text="${resultado.mensaje}">No hay datos.</p>
+</div>
+
+<div th:unless="${resultado.mensaje}">
+  <p>
+    <strong>Total de Entrenamientos:</strong>
+    <span th:text="${resultado.totalEntrenamientos}">0</span>
+  </p>
+  <p>
+    <strong>Pago Base (Q 100.00 c/u):</strong>
+    Q <span th:text="${#numbers.formatDecimal(resultado.pagoBase, 1, 2)}">0.00</span>
+  </p>
+  <p>
+    <strong>Bono Internacional (Q 250.00 c/u):</strong>
+    Q <span th:text="${#numbers.formatDecimal(resultado.bonoInternacional, 1, 2)}">0.00</span>
+  </p>
+  <p>
+    <strong>Bono por Récords Rotos (<span th:text="${resultado.recordsRotos}">0</span>):</strong>
+    Q <span th:text="${#numbers.formatDecimal(resultado.bonoPorRecord, 1, 2)}">0.00</span>
+  </p>
+  <hr/>
+  <h3>
+    <strong>PAGO TOTAL A REALIZAR:</strong>
+    Q <strong th:text="${#numbers.formatDecimal(resultado.pagoTotal, 1, 2)}">0.00</strong>
+  </h3>
+</div>
+
+<br/>
+<a th:href="@{/api/atletas/historial/{id}(id=${resultado.atletaId})}">Volver al historial del atleta</a>
+
+</body>
+</html>

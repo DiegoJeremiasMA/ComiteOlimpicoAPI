@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Administración</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1>Administración del Sistema</h1>
+
+<h2>Crear Respaldo</h2>
+<form th:action="@{/api/servicios/respaldos/crear}" method="POST">
+    <button type="submit">Crear Nuevo Respaldo JSON Ahora</button>
+</form>
+
+<hr/>
+
+<h2>Restaurar desde Respaldo</h2>
+<p>Seleccione un respaldo para restaurar. (ADVERTENCIA: Esto borrará todos los datos actuales).</p>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Nombre del Archivo</th>
+        <th>Acción</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="archivo : ${respaldos}">
+        <td th:text="${archivo}">respaldo_...json</td>
+        <td>
+            <form th:action="@{/api/servicios/respaldos/restaurar}" method="POST">
+                <input type="hidden" name="nombreArchivo" th:value="${archivo}" />
+                <button type="submit">Restaurar desde este archivo</button>
+            </form>
+            <form th:action="@{/api/servicios/respaldos/eliminar}" method="POST" style="display: inline-block;">
+                <input type="hidden" name="nombreArchivo" th:value="${archivo}" />
+                <button type="submit" style="color: red;"
+
+                        th:onclick="'return confirm(\'¿Estás seguro de que quieres eliminar este respaldo? Esta acción es permanente.\');'">
+                    Eliminar
+                </button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${respaldos.isEmpty()}">
+        <td colspan="2">No se encontraron archivos de respaldo.</td>
+    </tr>
+    </tbody>
+</table>
+
+<br/>
+<a href="/api/atletas/lista">Volver a la lista principal</a>
+</body>
+</html>

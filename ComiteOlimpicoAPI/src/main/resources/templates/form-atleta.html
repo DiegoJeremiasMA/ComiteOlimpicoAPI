@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Atleta</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1>Registrar Nuevo Atleta</h1>
+
+<form action="#" th:action="@{/api/atletas/guardar}" th:object="${atleta}" method="POST">
+    <input type="hidden" th:field="*{id}" />
+    <div>
+        <label>Nombre Completo:</label>
+        <input type="text" th:field="*{nombreCompleto}" />
+    </div>
+    <div>
+        <label>Edad:</label>
+        <input type="number" th:field="*{edad}" />
+    </div>
+    <div>
+        <label>Departamento:</label>
+        <input type="text" th:field="*{departamento}" />
+    </div>
+    <div>
+        <label>Nacionalidad:</label>
+        <input type="text" th:field="*{nacionalidad}" />
+    </div>
+    <div>
+        <label>Fecha Ingreso (YYYY-MM-DD):</label>
+        <input type="text" th:field="*{fechaIngreso}" />
+    </div>
+    <div>
+        <label>ID Disciplina:</label>
+        <input type="number" th:field="*{disciplinaId}" />
+    </div>
+
+    <button type="submit">Guardar Atleta</button>
+</form>
+
+<br/>
+<a href="/api/atletas/lista">Volver a la lista</a>
+</body>
+</html>

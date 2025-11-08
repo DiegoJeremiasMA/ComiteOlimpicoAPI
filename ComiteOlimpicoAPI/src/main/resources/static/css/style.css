@@ -1,0 +1,25 @@
+body {
+    /* 1. CORRECCIÓN DE RUTA: Usamos ../ para "subir" un nivel desde la carpeta 'css' */
+    /* 2. CORRECCIÓN DE EXTENSIÓN: Tu archivo es .png, no .jpg */
+    background-image: url('../images/fondo-olimpico.png');
+
+    /* 2. Propiedades para que el fondo se vea bien */
+    background-size: cover; /* Hace que la imagen cubra toda la pantalla */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-attachment: fixed; /* Mantiene el fondo quieto cuando haces scroll */
+    background-position: top center;  /* Centra la imagen */
+
+    /* Opcional: un color de fondo de respaldo si la imagen no carga */
+    background-color: #f0f0f0;
+}
+
+/* Te recomiendo mucho añadir esto para que el contenido sea legible
+  sobre el fondo.
+*/
+.content-container {
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
+    padding: 25px;
+    border-radius: 10px;
+    max-width: 960px;
+    margin: 20px auto;
+}

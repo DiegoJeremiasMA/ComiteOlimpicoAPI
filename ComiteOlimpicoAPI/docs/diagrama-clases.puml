@@ -1,0 +1,130 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam style strictuml
+hide empty members
+skinparam linetype ortho
+
+title Diagrama_de_Clases_API_Comite_Olimpico
+
+
+package Capa_1_Controladores <<Frame>> {
+    note as N_Ctrl
+        "**Capa de Controladores (@Controller)**
+        Recibe las peticiones web (URLs) del usuario.
+        Llama a los servicios para procesar la lógica.
+        Devuelve la plantilla HTML (Vista) al navegador.
+        Implementa el patrón **Controlador** de MVC."
+    end note
+
+    class AtletaController {
+        + mostrarListaDeAtletas(model: Model): String
+        + mostrarFormularioDeEdicion(id: int, model: Model): String
+        + guardarAtleta(atleta: Atleta): String
+        + eliminarAtleta(id: int): String
+        + mostrarHistorialDeAtleta(id: int, model: Model): String
+        + mostrarFormularioEntrenamiento(atletaId: int, model: Model): String
+        + guardarEntrenamiento(sesion: SesionEntrenamiento): String
+    }
+
+    class ServiciosController {
+        + mostrarPaginaAdmin(model: Model): String
+        + crearRespaldo(): String
+        + restaurarRespaldo(nombreArchivo: String): String
+        + eliminarRespaldo(nombreArchivo: String): String
+        + generarReporte(response: HttpServletResponse): void
+        + mostrarPlanillaDeAtleta(id: int, model: Model): String
+    }
+}
+
+package Capa_2_Servicios <<Frame>> {
+    note as N_Srv
+        "**Capa de Servicios (@Service)**
+        Contiene la **lógica de negocio** pura.
+        (Ej. cómo se calcula una planilla, cómo se genera un reporte).
+        Es 'inyectada' en los Controladores usando **Inyección de Dependencias**."
+    end note
+
+    class Estadistica
+    class PlanillaService {
+        + procesarPlanillaDeAtleta(atletaId: int): Map
+    }
+    class ReporteService {
+        + generarReporteCompletoCSV(response: HttpServletResponse, atletaRepo: AtletaRepository, entrenoRepo: EntrenamientoRepository): void
+    }
+    class RespaldoService {
+        + crearRespaldoJSON(): String
+        + restaurarDesdeJSON(nombreArchivo: String): void
+        + eliminarRespaldo(nombreArchivo: String): void
+        + listarRespaldosDisponibles(): List
+    }
+}
+
+package Capa_3_Repositorios <<Frame>> {
+    note as N_Repo
+        "**Capa de Repositorios (@Repository)**
+        Implementa el **Patrón Repositorio**.
+        Abstrae el acceso a la base de datos.
+        Spring Data JPA implementa estos métodos automáticamente."
+    end note
+
+    interface AtletaRepository <<interface>> {
+        + JpaRepository
+    }
+
+    interface EntrenamientoRepository <<interface>> {
+        + JpaRepository
+        + findByAtletaId(atletaId: int): List
+    }
+}
+
+package Capa_4_Modelo_Entidades <<Frame>> {
+    note as N_Model
+        "**Modelo / Entidades (@Entity)**
+        Representan las tablas de la base de datos.
+        Usan @Entity (JPA) y @Getter/@Setter (Lombok).
+        Implementa el patrón **Modelo** de MVC."
+    end note
+
+    class Atleta <<Entity>> {
+        - id: int
+        - nombreCompleto: String
+        - disciplinaId: int
+        - sesiones: List
+    }
+
+    class SesionEntrenamiento <<Entity>> {
+        - id: int
+        - fecha: String
+        - marca: double
+        - atletaId: int
+    }
+
+    enum Disciplina {
+        + ATLETISMO
+        + NATACION
+        + fromId(id: int): Disciplina
+    }
+}
+
+AtletaController ..> AtletaRepository : usa
+AtletaController ..> EntrenamientoRepository : usa
+AtletaController ..> Estadistica : usa
+AtletaController ..> PlanillaService : usa
+
+ServiciosController ..> ReporteService : usa
+ServiciosController ..> RespaldoService : usa
+ServiciosController ..> AtletaRepository : usa
+ServiciosController ..> EntrenamientoRepository : usa
+
+PlanillaService ..> AtletaRepository : usa
+PlanillaService ..> EntrenamientoRepository : usa
+PlanillaService ..> Disciplina : usa
+ReporteService ..> AtletaRepository : usa
+ReporteService ..> EntrenamientoRepository : usa
+ReporteService ..> Disciplina : usa
+RespaldoService ..> AtletaRepository : usa
+RespaldoService ..> EntrenamientoRepository : usa
+
+Atleta "1" -- "0..*" SesionEntrenamiento : tiene
+
+@enduml
